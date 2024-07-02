@@ -2,10 +2,15 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConsultoraMutualModule } from './consultora-mutual/consultora-mutual.module';
-import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [ConsultoraMutualModule, JwtModule.register({})],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    ConsultoraMutualModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

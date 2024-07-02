@@ -9,17 +9,17 @@ export declare class ConsultoraMutualController {
         message: string;
         data: any;
     }>;
-    cashOut(body: CashOutDto): Promise<{
+    cashOut(body: CashOutDto, req: any): Promise<{
         statusCode: HttpStatus;
         message: string;
         data: any;
     }>;
-    getCustomerByAlias(alias: string): Promise<{
+    getCustomerByAlias(alias: string, req: any): Promise<{
         statusCode: HttpStatus;
         message: string;
         data: any;
     }>;
-    getCustomerByCbu(cbu: string): Promise<{
+    getCustomerByCbu(cbu: string, req: any): Promise<{
         statusCode: HttpStatus;
         message: string;
         data: any;

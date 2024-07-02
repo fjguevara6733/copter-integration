@@ -7,7 +7,10 @@ import axios, { AxiosRequestConfig } from 'axios';
 
 @Injectable()
 export class ConsultoraMutualService {
-  private url = process.env.URL_GENERAL;
+  private url =
+    process.env.URL_GENERAL ?? 'https://apisrv.itconsultoramutual.com.ar/api';
+  private urlValidate =
+    process.env.URL_VALIDATE ?? 'https://wallet.consultoramutual.com.ar/api';
   async login(body: LoginDto) {
     const requestOptions: AxiosRequestConfig = {
       method: 'POST',
@@ -24,8 +27,12 @@ export class ConsultoraMutualService {
     }
   }
 
-  async cashOut(body: CashOutDto) {
+  async cashOut(body: CashOutDto, token:string) {
     const requestOptions: AxiosRequestConfig = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
       method: 'POST',
       url: `${this.url}/CobrosPagos/CreaTTAPI`,
       data: body,
@@ -39,10 +46,14 @@ export class ConsultoraMutualService {
       throw new Error('Failed to get FX rate');
     }
   }
-  async getCustomerByAlias(alias: string) {
+  async getCustomerByAlias(alias: string, token: string) {
     const requestOptions: AxiosRequestConfig = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
       method: 'GET',
-      url: `${this.url}/cvu/accounts?${alias}`,
+      url: `${this.urlValidate}/cvu/accounts?${alias}`,
     };
 
     try {
@@ -53,10 +64,16 @@ export class ConsultoraMutualService {
       throw new Error('Failed to get FX rate');
     }
   }
-  async getCustomerByCbu(cbu: string) {
+  async getCustomerByCbu(cbu: string, token: string) {
+    console.log(cbu);
+
     const requestOptions: AxiosRequestConfig = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
       method: 'GET',
-      url: `${this.url}/cvu/accounts?cbu_cvu=${cbu}`,
+      url: `${this.urlValidate}/cvu/accounts?cbu_cvu=${cbu}`,
     };
 
     try {

@@ -22,6 +22,7 @@ let ConsultoraMutualController = class ConsultoraMutualController {
         this.consultoraMutualService = consultoraMutualService;
     }
     async login(body) {
+        console.log('login');
         try {
             return {
                 statusCode: common_1.HttpStatus.ACCEPTED,
@@ -33,39 +34,47 @@ let ConsultoraMutualController = class ConsultoraMutualController {
             throw new common_1.HttpException(error?.message, common_1.HttpStatus.BAD_REQUEST);
         }
     }
-    async cashOut(body) {
+    async cashOut(body, req) {
+        console.log('cash-out');
+        const token = req.query.token;
         try {
             return {
                 statusCode: common_1.HttpStatus.ACCEPTED,
                 message: 'cash-out',
-                data: await this.consultoraMutualService.cashOut(body),
+                data: await this.consultoraMutualService.cashOut(body, token),
             };
         }
         catch (error) {
             throw new common_1.HttpException(error?.message, common_1.HttpStatus.BAD_REQUEST);
         }
     }
-    async getCustomerByAlias(alias) {
+    async getCustomerByAlias(alias, req) {
+        console.log('get-customer-by-alias/:alias');
+        const token = req.query.token;
         try {
             return {
                 statusCode: common_1.HttpStatus.ACCEPTED,
                 message: 'get-customer-by-alias',
-                data: await this.consultoraMutualService.getCustomerByAlias(alias),
+                data: await this.consultoraMutualService.getCustomerByAlias(alias, token),
             };
         }
         catch (error) {
+            console.log(error);
             throw new common_1.HttpException(error?.message, common_1.HttpStatus.BAD_REQUEST);
         }
     }
-    async getCustomerByCbu(cbu) {
+    async getCustomerByCbu(cbu, req) {
+        console.log('get-customer-by-cbu/:cbu');
+        const token = req.query.token;
         try {
             return {
                 statusCode: common_1.HttpStatus.ACCEPTED,
                 message: 'get-customer-by-cbu',
-                data: await this.consultoraMutualService.getCustomerByCbu(cbu),
+                data: await this.consultoraMutualService.getCustomerByCbu(cbu, token),
             };
         }
         catch (error) {
+            console.log(error);
             throw new common_1.HttpException(error?.message, common_1.HttpStatus.BAD_REQUEST);
         }
     }
@@ -80,26 +89,29 @@ __decorate([
 ], ConsultoraMutualController.prototype, "login", null);
 __decorate([
     (0, common_1.Post)('cash-out'),
-    (0, swagger_1.ApiHeader)({ name: 'Bearer Token', required: true }),
+    (0, swagger_1.ApiQuery)({ name: 'token', required: false }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_consultora_mutual_dto_1.CashOutDto]),
+    __metadata("design:paramtypes", [create_consultora_mutual_dto_1.CashOutDto, Object]),
     __metadata("design:returntype", Promise)
 ], ConsultoraMutualController.prototype, "cashOut", null);
 __decorate([
     (0, common_1.Get)('get-customer-by-alias/:alias'),
-    (0, swagger_1.ApiHeader)({ name: 'Bearer Token', required: true }),
+    (0, swagger_1.ApiQuery)({ name: 'token', required: false }),
     __param(0, (0, common_1.Param)('alias')),
+    __param(1, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], ConsultoraMutualController.prototype, "getCustomerByAlias", null);
 __decorate([
     (0, common_1.Get)('get-customer-by-cbu/:cbu'),
-    (0, swagger_1.ApiHeader)({ name: 'Bearer Token', required: true }),
+    (0, swagger_1.ApiQuery)({ name: 'token', required: false }),
     __param(0, (0, common_1.Param)('cbu')),
+    __param(1, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], ConsultoraMutualController.prototype, "getCustomerByCbu", null);
 exports.ConsultoraMutualController = ConsultoraMutualController = __decorate([

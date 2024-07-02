@@ -11,13 +11,18 @@ const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const consultora_mutual_module_1 = require("./consultora-mutual/consultora-mutual.module");
-const jwt_1 = require("@nestjs/jwt");
+const config_1 = require("@nestjs/config");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [consultora_mutual_module_1.ConsultoraMutualModule, jwt_1.JwtModule.register({})],
+        imports: [
+            config_1.ConfigModule.forRoot({
+                isGlobal: true,
+            }),
+            consultora_mutual_module_1.ConsultoraMutualModule,
+        ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })

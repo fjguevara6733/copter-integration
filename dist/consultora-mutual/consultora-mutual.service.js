@@ -11,7 +11,8 @@ const common_1 = require("@nestjs/common");
 const axios_1 = require("axios");
 let ConsultoraMutualService = class ConsultoraMutualService {
     constructor() {
-        this.url = process.env.URL_GENERAL;
+        this.url = process.env.URL_GENERAL ?? 'https://apisrv.itconsultoramutual.com.ar/api';
+        this.urlValidate = process.env.URL_VALIDATE ?? 'https://wallet.consultoramutual.com.ar/api';
     }
     async login(body) {
         const requestOptions = {
@@ -28,8 +29,12 @@ let ConsultoraMutualService = class ConsultoraMutualService {
             throw new Error('Failed to get FX rate');
         }
     }
-    async cashOut(body) {
+    async cashOut(body, token) {
         const requestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
             method: 'POST',
             url: `${this.url}/CobrosPagos/CreaTTAPI`,
             data: body,
@@ -43,10 +48,14 @@ let ConsultoraMutualService = class ConsultoraMutualService {
             throw new Error('Failed to get FX rate');
         }
     }
-    async getCustomerByAlias(alias) {
+    async getCustomerByAlias(alias, token) {
         const requestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
             method: 'GET',
-            url: `${this.url}/cvu/accounts?${alias}`,
+            url: `${this.urlValidate}/cvu/accounts?${alias}`,
         };
         try {
             const response = await (0, axios_1.default)(requestOptions);
@@ -57,10 +66,15 @@ let ConsultoraMutualService = class ConsultoraMutualService {
             throw new Error('Failed to get FX rate');
         }
     }
-    async getCustomerByCbu(cbu) {
+    async getCustomerByCbu(cbu, token) {
+        console.log(cbu);
         const requestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
             method: 'GET',
-            url: `${this.url}/cvu/accounts?cbu_cvu=${cbu}`,
+            url: `${this.urlValidate}/cvu/accounts?cbu_cvu=${cbu}`,
         };
         try {
             const response = await (0, axios_1.default)(requestOptions);
