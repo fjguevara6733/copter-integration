@@ -7,6 +7,7 @@ import {
   HttpStatus,
   HttpException,
   Request,
+  Res,
 } from '@nestjs/common';
 import { ConsultoraMutualService } from './consultora-mutual.service';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
@@ -14,6 +15,8 @@ import {
   CashOutDto,
   LoginDto,
 } from 'src/common/dto/create-consultora-mutual.dto';
+import { Response } from 'express';
+import { transferenciaCreditoDto } from 'src/common/dto/copter.validator';
 
 @Controller()
 @ApiTags('consultora-mutual')
@@ -88,5 +91,128 @@ export class ConsultoraMutualController {
 
       throw new HttpException(error?.message, HttpStatus.BAD_REQUEST);
     }
+  }
+
+  @Post('login-exchange')
+  async loginExchange(@Res() res: Response) {
+    console.log('login-exchange');
+    await this.consultoraMutualService
+      .loginExchange()
+      .then((result) => {
+        const response = {
+          statusCode: HttpStatus.ACCEPTED,
+          message: 'login-exchange',
+          data: result,
+        };
+        res.status(HttpStatus.ACCEPTED).send(response);
+      })
+      .catch((error) => {
+        console.log(error);
+        const response = {
+          statusCode: HttpStatus.BAD_REQUEST,
+          message: 'Error login-exchange',
+          data: error,
+        };
+        res.status(HttpStatus.BAD_REQUEST).send(response);
+      });
+  }
+
+  @Post('transferencia-exchange')
+  async transactionExchange(
+    @Body() body: transferenciaCreditoDto,
+    @Res() res: Response,
+  ) {
+    console.log('transferencia-exchange');
+    await this.consultoraMutualService
+      .transactionExchange(body)
+      .then((result) => {
+        const response = {
+          statusCode: HttpStatus.ACCEPTED,
+          message: 'transferencia-exchange',
+          data: result,
+        };
+        res.status(HttpStatus.ACCEPTED).send(response);
+      })
+      .catch((error) => {
+        console.log(error);
+        const response = {
+          statusCode: HttpStatus.BAD_REQUEST,
+          message: 'Error transferencia-exchange',
+          data: error,
+        };
+        res.status(HttpStatus.BAD_REQUEST).send(response);
+      });
+  }
+
+  @Get('checkCbu/:cbu')
+  async checkCBU(@Param('cbu') cbu: string, @Res() res: Response) {
+    console.log('checkCbu');
+    await this.consultoraMutualService
+      .checkCBU(cbu)
+      .then((result) => {
+        const response = {
+          statusCode: HttpStatus.ACCEPTED,
+          message: 'checkCbu',
+          data: result,
+        };
+        res.status(HttpStatus.ACCEPTED).send(response);
+      })
+      .catch((error) => {
+        console.log(error);
+        const response = {
+          statusCode: HttpStatus.BAD_REQUEST,
+          message: 'Error checkCbu',
+          data: error,
+        };
+        res.status(HttpStatus.BAD_REQUEST).send(response);
+      });
+  }
+
+  @Get('saldo')
+  async saldo(@Res() res: Response) {
+    console.log('saldo');
+    await this.consultoraMutualService
+      .saldo()
+      .then((result) => {
+        const response = {
+          statusCode: HttpStatus.ACCEPTED,
+          message: 'saldo',
+          data: result,
+        };
+        res.status(HttpStatus.ACCEPTED).send(response);
+      })
+      .catch((error) => {
+        console.log(error);
+        const response = {
+          statusCode: HttpStatus.BAD_REQUEST,
+          message: 'Error saldo',
+          data: error,
+        };
+        res.status(HttpStatus.BAD_REQUEST).send(response);
+      });
+  }
+
+  @Get('estado-transaccion/:id')
+  async estadoTransaccion(@Param('id') id: string, @Res() res: Response) {
+    console.log('estado-transaccion');
+    await this.consultoraMutualService
+      .estadoTransaccion(id)
+      .then((result) => {
+        const response = {
+          statusCode: HttpStatus.ACCEPTED,
+          message: 'estado-transaccion',
+          data: result,
+        };
+        res.status(HttpStatus.ACCEPTED).send(response);
+      })
+      .catch((error) => {
+        console.log(error);
+        const response = {
+          statusCode: HttpStatus.BAD_REQUEST,
+          message: 'Error estado-transaccion',
+          data: error,
+        };
+        res.status(HttpStatus.BAD_REQUEST).send(response);
+      });
   }
 }

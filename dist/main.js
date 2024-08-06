@@ -6,7 +6,7 @@ const swagger_1 = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
-    const port = process.env.PORT || 3000;
+    const port = process.env.PORT || 4000;
     const globalPrefix = 'api';
     const config = new swagger_1.DocumentBuilder()
         .setTitle('Chronos Prestamos')
