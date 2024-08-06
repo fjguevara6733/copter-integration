@@ -109,10 +109,16 @@ export class ConsultoraMutualService {
   }
 
   async transactionExchange(body: transferenciaCreditoDto) {
-    if(this.token === "") throw 'No autorizado, generar un token.';
+    if (this.token === '') throw 'No autorizado, generar un token.';
+
     const existCbu = await this.checkCBU(body.cbuCredito)
       .then((result) => result)
       .catch((error) => error);
+
+    const saldo = await this.saldo()
+      .then((result) => result)
+      .catch((error) => error);
+    if (saldo < body.importe) throw 'Saldo insuficiente';
 
     if (typeof existCbu === 'string') throw existCbu;
 
@@ -133,7 +139,7 @@ export class ConsultoraMutualService {
   }
 
   async checkCBU(cbu: string) {
-    if(this.token === "") throw 'No autorizado, generar un token.';
+    if (this.token === '') throw 'No autorizado, generar un token.';
     const requestOptions: AxiosRequestConfig = {
       method: 'GET',
       headers: {
@@ -150,7 +156,7 @@ export class ConsultoraMutualService {
   }
 
   async saldo() {
-    if(this.token === "") throw 'No autorizado, generar un token.';
+    if (this.token === '') throw 'No autorizado, generar un token.';
     const requestOptions: AxiosRequestConfig = {
       method: 'GET',
       headers: {
@@ -167,7 +173,7 @@ export class ConsultoraMutualService {
   }
 
   async estadoTransaccion(id: string) {
-    if(this.token === "") throw 'No autorizado, generar un token.';
+    if (this.token === '') throw 'No autorizado, generar un token.';
     const requestOptions: AxiosRequestConfig = {
       method: 'GET',
       headers: {

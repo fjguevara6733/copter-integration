@@ -27,7 +27,7 @@ let ConsultoraMutualService = class ConsultoraMutualService {
             return response.data;
         }
         catch (error) {
-            console.log(...oo_oo(`2344492426_29_6_29_34_4`, 'Error:', error));
+            console.log(...oo_oo(`670691186_29_6_29_34_4`, 'Error:', error));
             throw new Error('Failed to get FX rate');
         }
     }
@@ -46,7 +46,7 @@ let ConsultoraMutualService = class ConsultoraMutualService {
             return response.data;
         }
         catch (error) {
-            console.log(...oo_oo(`2344492426_49_6_49_34_4`, 'Error:', error));
+            console.log(...oo_oo(`670691186_49_6_49_34_4`, 'Error:', error));
             throw new Error('Failed to get FX rate');
         }
     }
@@ -64,12 +64,12 @@ let ConsultoraMutualService = class ConsultoraMutualService {
             return response.data;
         }
         catch (error) {
-            console.log(...oo_oo(`2344492426_67_6_67_34_4`, 'Error:', error));
+            console.log(...oo_oo(`670691186_67_6_67_34_4`, 'Error:', error));
             throw new Error('Failed to get FX rate');
         }
     }
     async getCustomerByCbu(cbu, token) {
-        console.log(...oo_oo(`2344492426_72_4_72_20_4`, cbu));
+        console.log(...oo_oo(`670691186_72_4_72_20_4`, cbu));
         const requestOptions = {
             headers: {
                 'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ let ConsultoraMutualService = class ConsultoraMutualService {
             return response.data;
         }
         catch (error) {
-            console.log(...oo_oo(`2344492426_87_6_87_34_4`, 'Error:', error));
+            console.log(...oo_oo(`670691186_87_6_87_34_4`, 'Error:', error));
             throw new Error('Failed to get FX rate');
         }
     }
@@ -99,18 +99,23 @@ let ConsultoraMutualService = class ConsultoraMutualService {
         const response = await (0, axios_1.default)(requestOptions)
             .then((response) => response.data)
             .catch((error) => {
-            console.log(...oo_oo(`2344492426_104_8_104_26_4`, error));
+            console.log(...oo_oo(`670691186_104_8_104_26_4`, error));
             return error;
         });
         this.token = response.token;
         return response;
     }
     async transactionExchange(body) {
-        if (this.token === "")
+        if (this.token === '')
             throw 'No autorizado, generar un token.';
         const existCbu = await this.checkCBU(body.cbuCredito)
             .then((result) => result)
             .catch((error) => error);
+        const saldo = await this.saldo()
+            .then((result) => result)
+            .catch((error) => error);
+        if (saldo < body.importe)
+            throw 'Saldo insuficiente';
         if (typeof existCbu === 'string')
             throw existCbu;
         const requestOptions = {
@@ -124,12 +129,12 @@ let ConsultoraMutualService = class ConsultoraMutualService {
         return await (0, axios_1.default)(requestOptions)
             .then((response) => response.data)
             .catch((error) => {
-            console.log(...oo_oo(`2344492426_130_8_130_26_4`, error));
+            console.log(...oo_oo(`670691186_136_8_136_26_4`, error));
             return error;
         });
     }
     async checkCBU(cbu) {
-        if (this.token === "")
+        if (this.token === '')
             throw 'No autorizado, generar un token.';
         const requestOptions = {
             method: 'GET',
@@ -141,12 +146,12 @@ let ConsultoraMutualService = class ConsultoraMutualService {
         return await (0, axios_1.default)(requestOptions)
             .then((response) => response.data.data)
             .catch((error) => {
-            console.log(...oo_oo(`2344492426_147_8_147_26_4`, error));
+            console.log(...oo_oo(`670691186_153_8_153_26_4`, error));
             return error;
         });
     }
     async saldo() {
-        if (this.token === "")
+        if (this.token === '')
             throw 'No autorizado, generar un token.';
         const requestOptions = {
             method: 'GET',
@@ -158,12 +163,12 @@ let ConsultoraMutualService = class ConsultoraMutualService {
         return await (0, axios_1.default)(requestOptions)
             .then((response) => response.data.data)
             .catch((error) => {
-            console.log(...oo_oo(`2344492426_164_8_164_26_4`, error));
+            console.log(...oo_oo(`670691186_170_8_170_26_4`, error));
             return error;
         });
     }
     async estadoTransaccion(id) {
-        if (this.token === "")
+        if (this.token === '')
             throw 'No autorizado, generar un token.';
         const requestOptions = {
             method: 'GET',
@@ -175,7 +180,7 @@ let ConsultoraMutualService = class ConsultoraMutualService {
         return await (0, axios_1.default)(requestOptions)
             .then((response) => response.data.data)
             .catch((error) => {
-            console.log(...oo_oo(`2344492426_181_8_181_26_4`, error));
+            console.log(...oo_oo(`670691186_187_8_187_26_4`, error));
             return error;
         });
     }
